@@ -17,6 +17,11 @@ namespace Minesweeper
         public static int Losses { get; private set; }
         public static int AvgTime { get; private set; }
 
+
+        /// <summary>
+        /// Loads player stats into the static class. Automatically handles the situation where 
+        /// there are no stats to pull by simply defaulting to 0.
+        /// </summary>
         public static void LoadStats()
         {
             try
@@ -43,6 +48,14 @@ namespace Minesweeper
             }
         }
 
+
+        /// <summary>
+        /// Save stats to stats file. Expected to trigger each time the game ends in a win or loss.
+        /// Recalculates the average time based on the previous average and the time elapsed
+        /// in the current game.
+        /// </summary>
+        /// <param name="isWin">bool indicating whether the game was won.</param>
+        /// <param name="timeElapsed">The time elapsed for the current game.</param>
         public static void SaveStats(bool isWin, int timeElapsed)
         {
             if (isWin)

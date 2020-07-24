@@ -24,11 +24,4 @@ namespace Minesweeper
         Blank = 10
     }
 
-    /// <summary>
-    /// Class for helper functions for CellState enumeration.
-    /// </summary>
-    static class CellStateHelper
-    {
-
-    }
 }

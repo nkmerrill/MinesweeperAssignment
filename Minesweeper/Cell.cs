@@ -12,8 +12,6 @@ using System.Runtime.CompilerServices;
 namespace Minesweeper
 {
 
-    public delegate void CellClick(object sender, EventArgs e);
-
     /// <summary>
     /// Customer user control to represent a cell in the minesweeper game. Consists of a button, and panel, and a label.
     /// </summary>
@@ -29,7 +27,7 @@ namespace Minesweeper
         /// <summary>
         /// Constructor should at least take the game object, coordinates, and a delegate . This is required for eventhandling.
         /// </summary>
-        public Cell(Game game, int newX, int newY, CellClick cellClick, CellState newCellState = CellState.Blank, int size = 25)
+        public Cell(Game game, int newX, int newY, EventHandler cellClick, CellState newCellState = CellState.Blank, int size = 25)
         {
             gameEngine = game;
             x = newX;
@@ -54,6 +52,11 @@ namespace Minesweeper
             SetCellState(newCellState);
         }
 
+        /// <summary>
+        /// Handles changing the size of the cell.
+        /// Font size of label is scaled based on the base font size for readability.
+        /// </summary>
+        /// <param name="size">New size for cell.</param>
         public void ChangeSize(int size)
         {
             this.Width = size;
@@ -203,17 +206,13 @@ namespace Minesweeper
         /// <summary>
         /// Register delegates for button click event handler.
         /// </summary>
-        /// <param name="clickDelegate">Delegate of a standard event method.</param>
-        public void InitializeClickDelegates(CellClick cellClick)
+        /// <param name="cellClick">Delegate of a standard event method.</param>
+        public void InitializeClickDelegates(EventHandler cellClick)
         {
-            button.Click += new EventHandler(OnClick);
+            button.Click += (sender,e)=> { gameEngine.ClickSpace(x, y); } ;
             button.Click += new EventHandler(cellClick);
         }
 
-        private void OnClick(object sender, EventArgs e)
-        {
-            gameEngine.ClickSpace(x,y);
-            SetCellState(gameEngine.board.IsCellRevealed(x, y) ? gameEngine.board.GetCell(x, y) : CellState.Hidden);
-        }
+      
     }
 }
